@@ -47,7 +47,6 @@
             {% for product in products %}
             <div class="product-card bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col" data-category="{{ product.category }}">
                 <div class="relative h-52 bg-gray-200 overflow-hidden">
-                    <!-- Grab first image safely from the set relation -->
                     {% if product.images.all %}
                         <img src="{{ product.images.first.image.url }}" alt="{{ product.title }}" class="w-full h-full object-cover">
                     {% else %}
@@ -61,7 +60,6 @@
                     <h3 class="text-lg font-bold text-gray-900 mb-2">{{ product.title }}</h3>
                     <p class="text-gray-600 text-sm flex-grow line-clamp-3">{{ product.short_description }}</p>
 
-                    <!-- Pack all associated images into a dynamic data attribute list -->
                     <button
                         onclick="openModal('{{ product.title|escapejs }}', '{{ product.detailed_description|escapejs }}', '{{ product.get_category_display }}', [{% for img in product.images.all %}'{{ img.image.url }}'{% if not forloop.last %},{% endif %}{% endfor %}])"
                         class="mt-4 w-full bg-indigo-600 text-white text-sm font-semibold py-2.5 px-4 rounded-lg hover:bg-indigo-700 transition flex items-center justify-center space-x-2">
@@ -78,7 +76,7 @@
         </div>
     </main>
 
-    <!-- NEW VERTICAL FLOW STACKED POP-UP MODAL -->
+    <!-- VERTICAL FLOW STACKED POP-UP MODAL -->
     <div id="product-modal" class="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
         <div class="bg-white rounded-2xl max-w-lg w-full max-h-[92vh] overflow-y-auto shadow-2xl relative transform scale-95 transition-transform duration-300 flex flex-col">
 
@@ -86,16 +84,15 @@
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
 
-            <!-- 1. TOP PORTION: IMAGE SHOWCASE -->
+            <!-- TOP PORTION: IMAGE SHOWCASE -->
             <div class="bg-slate-50 p-4 border-b border-gray-100 flex flex-col items-center justify-center pt-10">
                 <div class="h-64 w-full flex items-center justify-center overflow-hidden">
                     <img id="modal-img" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg drop-shadow-md transition-all duration-200">
                 </div>
-                <!-- Mini Thumbnails Row Container -->
                 <div id="thumbnail-container" class="flex items-center justify-center gap-2 mt-4 overflow-x-auto w-full py-1"></div>
             </div>
 
-            <!-- 2. BOTTOM PORTION: DESCRIPTIONS & INQUIRY -->
+            <!-- BOTTOM PORTION: DESCRIPTIONS & INQUIRY -->
             <div class="p-6 flex flex-col justify-between flex-grow">
                 <div>
                     <span id="modal-badge" class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2.5 py-1 rounded-full uppercase"></span>
@@ -153,13 +150,11 @@
 
     <!-- INTERACTIVE JAVASCRIPT LOGIC -->
     <script>
-
         // Force the page to start at the absolute top on every reload
         window.addEventListener('beforeunload', function() {
             window.scrollTo(0, 0);
         });
 
-        // Fallback for some mobile browsers that ignore beforeunload
         if (history.scrollRestoration) {
             history.scrollRestoration = 'manual';
         }
@@ -167,8 +162,7 @@
             window.scrollTo(0, 0);
         };
 
-        // --- Existing code below remains the same ---
-        const menuBtn = document.getElementById('menu-btn');
+        // UI Element Selectors (Cleaned up duplication error here)
         const menuBtn = document.getElementById('menu-btn');
         const closeSidebar = document.getElementById('close-sidebar');
         const sidebar = document.getElementById('sidebar');
@@ -179,9 +173,10 @@
             sidebar.classList.toggle('-translate-x-full');
             overlay.classList.toggle('hidden');
         }
-        menuBtn.addEventListener('click', toggleSidebar);
-        closeSidebar.addEventListener('click', toggleSidebar);
-        overlay.addEventListener('click', toggleSidebar);
+
+        if (menuBtn) menuBtn.addEventListener('click', toggleSidebar);
+        if (closeSidebar) closeSidebar.addEventListener('click', toggleSidebar);
+        if (overlay) overlay.addEventListener('click', toggleSidebar);
 
         function filterCategory(cat) {
             // 1. Filter the product cards
@@ -194,21 +189,22 @@
                 }
             });
 
-            // 2. Global Tab Highlighting (Updates Header Navigation)
+            // 2. Global Tab Highlighting
             document.querySelectorAll('.filter-tab').forEach(tab => {
                 if (tab.getAttribute('data-target') === cat) {
-                    // Make it look active (amber color)
                     tab.classList.add('text-amber-400');
                     tab.classList.remove('text-white', 'opacity-80');
                 } else {
-                    // Make it look inactive (standard white)
                     tab.classList.remove('text-amber-400');
                     tab.classList.add('text-white', 'opacity-80');
                 }
             });
 
-            // 3. Smoothly scroll back to the top of the product grid so the user sees the new results
-            document.getElementById('product-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // 3. Smoothly scroll back to the top of the product grid
+            const grid = document.getElementById('product-grid');
+            if (grid) {
+                grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         }
 
         // Expanded openModal function to receive arrays of image URLs
@@ -219,18 +215,16 @@
 
             const mainImg = document.getElementById('modal-img');
             const thumbContainer = document.getElementById('thumbnail-container');
-            thumbContainer.innerHTML = ""; // Clear old thumbnails
+            thumbContainer.innerHTML = "";
 
-            if (imagesArray.length > 0) {
-                mainImg.src = imagesArray[0]; // Set initial top picture
+            if (imagesArray && imagesArray.length > 0) {
+                mainImg.src = imagesArray[0];
 
-                // Build thumbnail element row if multiple photos are present
                 imagesArray.forEach((url, index) => {
                     const thumb = document.createElement('img');
                     thumb.src = url;
                     thumb.className = `w-12 h-12 object-cover rounded-md cursor-pointer border-2 transition ${index === 0 ? 'border-indigo-600 scale-105' : 'border-transparent opacity-70 hover:opacity-100'}`;
 
-                    // Switch top main photo on click interaction
                     thumb.onclick = function() {
                         mainImg.src = url;
                         document.querySelectorAll('#thumbnail-container img').forEach(i => i.classList.remove('border-indigo-600', 'scale-105'));
@@ -242,12 +236,16 @@
                 mainImg.src = "";
             }
 
-            const shopPhone = "7016001517";
+            // Secure WhatsApp link generation (Prefixed with 91 for cleaner execution)
+            const shopPhone = "917016001517";
             const message = `Hello Gokul Agency, I'm interested in getting details about: ${title}.`;
             document.getElementById('whatsapp-btn').href = `https://wa.me/${shopPhone}?text=${encodeURIComponent(message)}`;
 
             modal.classList.remove('hidden');
-            setTimeout(() => { modal.classList.remove('opacity-0'); modal.querySelector('div').classList.remove('scale-95'); }, 10);
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.querySelector('div').classList.remove('scale-95');
+            }, 10);
         }
 
         function closeModal() {
