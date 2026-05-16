@@ -114,12 +114,61 @@
     </div>
 
     <!-- FOOTER -->
-    <footer class="bg-indigo-950 text-indigo-100 pt-12 pb-6 border-t border-indigo-900 text-center text-xs">
-        <p>&copy; 2026 Gokul Agency. Main Bazaar, Vadodara, Gujarat. Built securely with Django.</p>
+    <footer class="bg-indigo-950 text-indigo-100 pt-12 pb-6 border-t border-indigo-900">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            <div>
+                <h4 class="text-white font-bold text-lg mb-4">Gokul Agency</h4>
+                <p class="text-sm text-indigo-200 leading-relaxed">Your trusted local partner for premium office organizational tools and essential school stationery assets. Catering to individual requirements and wholesale institutional bulk updates.</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold text-lg mb-4">Quick Navigation</h4>
+                <div class="flex flex-col space-y-2 text-sm">
+                    <button onclick="filterCategory('all')" class="text-left hover:text-white transition"><i class="fa-solid fa-chevron-right text-xs mr-2 opacity-50"></i>All Products</button>
+                    <button onclick="filterCategory('school')" class="text-left hover:text-white transition"><i class="fa-solid fa-chevron-right text-xs mr-2 opacity-50"></i>School Department</button>
+                    <button onclick="filterCategory('office')" class="text-left hover:text-white transition"><i class="fa-solid fa-chevron-right text-xs mr-2 opacity-50"></i>Office Department</button>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-white font-bold text-lg mb-4">Store Communication</h4>
+                <ul class="space-y-3.5 text-sm">
+                    <li class="flex items-start space-x-3">
+                        <i class="fa-solid fa-location-dot text-amber-400 mt-1 text-base"></i>
+                        <span>Gokul Agency, Opp. Sukharamnagar Society, Near Sukharamnagar Water Tank, Ahmedabad, Gujarat</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <i class="fa-solid fa-phone text-amber-400 text-base"></i>
+                        <span>+91 70160 01517</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <i class="fa-solid fa-envelope text-amber-400 text-base"></i>
+                        <span>at197953@gmail.com</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 border-t border-indigo-900 pt-6 text-center text-xs text-indigo-300">
+            <p>&copy; 2026 Gokul Agency. All Rights Reserved. Built securely with Django.</p>
+        </div>
     </footer>
 
     <!-- INTERACTIVE JAVASCRIPT LOGIC -->
     <script>
+
+        // Force the page to start at the absolute top on every reload
+        window.addEventListener('beforeunload', function() {
+            window.scrollTo(0, 0);
+        });
+
+        // Fallback for some mobile browsers that ignore beforeunload
+        if (history.scrollRestoration) {
+            history.scrollRestoration = 'manual';
+        }
+        window.onload = function() {
+            window.scrollTo(0, 0);
+        };
+
+        // --- Existing code below remains the same ---
+        const menuBtn = document.getElementById('menu-btn');
         const menuBtn = document.getElementById('menu-btn');
         const closeSidebar = document.getElementById('close-sidebar');
         const sidebar = document.getElementById('sidebar');
@@ -135,9 +184,31 @@
         overlay.addEventListener('click', toggleSidebar);
 
         function filterCategory(cat) {
-            document.querySelectorAll('.product-card').forEach(card => {
-                card.style.display = (cat === 'all' || card.getAttribute('data-category') === cat) ? 'flex' : 'none';
+            // 1. Filter the product cards
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                if (cat === 'all' || card.getAttribute('data-category') === cat) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
             });
+
+            // 2. Global Tab Highlighting (Updates Header Navigation)
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                if (tab.getAttribute('data-target') === cat) {
+                    // Make it look active (amber color)
+                    tab.classList.add('text-amber-400');
+                    tab.classList.remove('text-white', 'opacity-80');
+                } else {
+                    // Make it look inactive (standard white)
+                    tab.classList.remove('text-amber-400');
+                    tab.classList.add('text-white', 'opacity-80');
+                }
+            });
+
+            // 3. Smoothly scroll back to the top of the product grid so the user sees the new results
+            document.getElementById('product-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         // Expanded openModal function to receive arrays of image URLs
@@ -171,7 +242,7 @@
                 mainImg.src = "";
             }
 
-            const shopPhone = "919876543210";
+            const shopPhone = "7016001517";
             const message = `Hello Gokul Agency, I'm interested in getting details about: ${title}.`;
             document.getElementById('whatsapp-btn').href = `https://wa.me/${shopPhone}?text=${encodeURIComponent(message)}`;
 
