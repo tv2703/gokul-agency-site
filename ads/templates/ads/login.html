@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gokul Agency | Secure Access</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-100 h-screen flex items-center justify-center px-4">
+    <div class="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 border border-slate-200">
+        <div class="text-center mb-6">
+            <h2 class="text-2xl font-black text-slate-800 tracking-tight">GOKUL AGENCY</h2>
+            <p class="text-xs text-slate-500 mt-1 uppercase tracking-widest font-semibold">Management Console Authentication</p>
+        </div>
+
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Username</label>
+                <input type="text" name="username" required class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Password</label>
+                <input type="password" name="password" required class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+            </div>
+
+            {% if form.errors %}
+            <p class="text-xs text-rose-600 font-medium bg-rose-50 p-2.5 rounded-md">Invalid owner credentials. Please try again.</p>
+            {% endif %}
+
+            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg text-sm transition shadow-md">
+                Secure Log In
+            </button>
+        </form>
+    </div>
+</body>
+</html>

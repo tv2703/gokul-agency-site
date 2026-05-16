@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gokul Agency | School & Office Stationery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+
+    <!-- TOP BRANDING -->
+    <div class="bg-indigo-900 text-white shadow-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold tracking-wide">GOKUL AGENCY</h1>
+            <button id="menu-btn" class="md:hidden text-2xl focus:outline-none"><i class="fa-solid fa-bars"></i></button>
+            <nav class="hidden md:flex space-x-6 font-medium">
+                <button onclick="filterCategory('all')" class="filter-tab hover:text-amber-400 transition text-amber-400" data-target="all">All Collection</button>
+                <button onclick="filterCategory('school')" class="filter-tab hover:text-amber-400 transition" data-target="school">School Stationery</button>
+                <button onclick="filterCategory('office')" class="filter-tab hover:text-amber-400 transition" data-target="office">Office Stationery</button>
+            </nav>
+        </div>
+    </div>
+
+    <!-- RESPONSIVE MOBILE SIDEBAR -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-indigo-950 text-white z-50 transform -translate-x-full transition-transform duration-300 ease-in-out shadow-2xl md:hidden">
+        <div class="p-6 flex justify-between items-center border-b border-indigo-800">
+            <span class="text-xl font-bold">Navigation</span>
+            <button id="close-sidebar" class="text-xl"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <nav class="flex flex-col p-6 space-y-4 font-medium">
+            <button onclick="filterCategory('all'); toggleSidebar();" class="text-left py-2 hover:text-amber-400 border-b border-indigo-900">All Collection</button>
+            <button onclick="filterCategory('school'); toggleSidebar();" class="text-left py-2 hover:text-amber-400 border-b border-indigo-900">School Stationery</button>
+            <button onclick="filterCategory('office'); toggleSidebar();" class="text-left py-2 hover:text-amber-400 border-b border-indigo-900">Office Stationery</button>
+        </nav>
+    </div>
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black opacity-50 z-45 hidden md:hidden"></div>
+
+    <!-- MAIN PRODUCT GALLERY SECTION -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-8">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl font-extrabold text-gray-900">Our Premium Stationery Products</h2>
+            <p class="text-gray-600 mt-2">Explore top-tier supplies curated specifically for academic excellence and corporate efficiency.</p>
+        </div>
+
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {% for product in products %}
+            <div class="product-card bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col" data-category="{{ product.category }}">
+                <div class="relative h-52 bg-gray-200 overflow-hidden">
+                    <!-- Grab first image safely from the set relation -->
+                    {% if product.images.all %}
+                        <img src="{{ product.images.first.image.url }}" alt="{{ product.title }}" class="w-full h-full object-cover">
+                    {% else %}
+                        <div class="w-full h-full flex items-center justify-center bg-gray-300 text-gray-500">No Photo Uploaded</div>
+                    {% endif %}
+                    <span class="absolute top-3 right-3 bg-indigo-900 text-white text-xs px-2.5 py-1 rounded-full uppercase tracking-wider font-semibold">
+                        {{ product.get_category_display }}
+                    </span>
+                </div>
+                <div class="p-5 flex flex-col flex-grow">
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">{{ product.title }}</h3>
+                    <p class="text-gray-600 text-sm flex-grow line-clamp-3">{{ product.short_description }}</p>
+
+                    <!-- Pack all associated images into a dynamic data attribute list -->
+                    <button
+                        onclick="openModal('{{ product.title|escapejs }}', '{{ product.detailed_description|escapejs }}', '{{ product.get_category_display }}', [{% for img in product.images.all %}'{{ img.image.url }}'{% if not forloop.last %},{% endif %}{% endfor %}])"
+                        class="mt-4 w-full bg-indigo-600 text-white text-sm font-semibold py-2.5 px-4 rounded-lg hover:bg-indigo-700 transition flex items-center justify-center space-x-2">
+                        <span>More Info</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-full text-center py-12">
+                <p class="text-gray-500 text-lg">No products uploaded yet.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+
+    <!-- NEW VERTICAL FLOW STACKED POP-UP MODAL -->
+    <div id="product-modal" class="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-2xl max-w-lg w-full max-h-[92vh] overflow-y-auto shadow-2xl relative transform scale-95 transition-transform duration-300 flex flex-col">
+
+            <button onclick="closeModal()" class="absolute top-4 right-4 bg-white/80 backdrop-blur hover:bg-white text-gray-700 rounded-full p-2 z-10 transition shadow-md">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <!-- 1. TOP PORTION: IMAGE SHOWCASE -->
+            <div class="bg-slate-50 p-4 border-b border-gray-100 flex flex-col items-center justify-center pt-10">
+                <div class="h-64 w-full flex items-center justify-center overflow-hidden">
+                    <img id="modal-img" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg drop-shadow-md transition-all duration-200">
+                </div>
+                <!-- Mini Thumbnails Row Container -->
+                <div id="thumbnail-container" class="flex items-center justify-center gap-2 mt-4 overflow-x-auto w-full py-1"></div>
+            </div>
+
+            <!-- 2. BOTTOM PORTION: DESCRIPTIONS & INQUIRY -->
+            <div class="p-6 flex flex-col justify-between flex-grow">
+                <div>
+                    <span id="modal-badge" class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2.5 py-1 rounded-full uppercase"></span>
+                    <h3 id="modal-title" class="text-xl font-black text-gray-900 mt-3 mb-4"></h3>
+                    <p id="modal-desc" class="text-gray-600 text-sm leading-relaxed whitespace-pre-line border-t border-gray-50 pt-3"></p>
+                </div>
+
+                <div class="mt-6">
+                    <a id="whatsapp-btn" href="#" target="_blank" class="w-full bg-emerald-600 text-white font-semibold py-3 px-4 rounded-xl hover:bg-emerald-700 transition flex items-center justify-center space-x-2 shadow-md">
+                        <i class="fa-brands fa-whatsapp text-xl"></i>
+                        <span>Inquire via WhatsApp</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-indigo-950 text-indigo-100 pt-12 pb-6 border-t border-indigo-900 text-center text-xs">
+        <p>&copy; 2026 Gokul Agency. Main Bazaar, Vadodara, Gujarat. Built securely with Django.</p>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT LOGIC -->
+    <script>
+        const menuBtn = document.getElementById('menu-btn');
+        const closeSidebar = document.getElementById('close-sidebar');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        const modal = document.getElementById('product-modal');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+        menuBtn.addEventListener('click', toggleSidebar);
+        closeSidebar.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        function filterCategory(cat) {
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.style.display = (cat === 'all' || card.getAttribute('data-category') === cat) ? 'flex' : 'none';
+            });
+        }
+
+        // Expanded openModal function to receive arrays of image URLs
+        function openModal(title, description, categoryLabel, imagesArray) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-desc').innerText = description;
+            document.getElementById('modal-badge').innerText = categoryLabel;
+
+            const mainImg = document.getElementById('modal-img');
+            const thumbContainer = document.getElementById('thumbnail-container');
+            thumbContainer.innerHTML = ""; // Clear old thumbnails
+
+            if (imagesArray.length > 0) {
+                mainImg.src = imagesArray[0]; // Set initial top picture
+
+                // Build thumbnail element row if multiple photos are present
+                imagesArray.forEach((url, index) => {
+                    const thumb = document.createElement('img');
+                    thumb.src = url;
+                    thumb.className = `w-12 h-12 object-cover rounded-md cursor-pointer border-2 transition ${index === 0 ? 'border-indigo-600 scale-105' : 'border-transparent opacity-70 hover:opacity-100'}`;
+
+                    // Switch top main photo on click interaction
+                    thumb.onclick = function() {
+                        mainImg.src = url;
+                        document.querySelectorAll('#thumbnail-container img').forEach(i => i.classList.remove('border-indigo-600', 'scale-105'));
+                        thumb.classList.add('border-indigo-600', 'scale-105');
+                    };
+                    thumbContainer.appendChild(thumb);
+                });
+            } else {
+                mainImg.src = "";
+            }
+
+            const shopPhone = "919876543210";
+            const message = `Hello Gokul Agency, I'm interested in getting details about: ${title}.`;
+            document.getElementById('whatsapp-btn').href = `https://wa.me/${shopPhone}?text=${encodeURIComponent(message)}`;
+
+            modal.classList.remove('hidden');
+            setTimeout(() => { modal.classList.remove('opacity-0'); modal.querySelector('div').classList.remove('scale-95'); }, 10);
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0');
+            modal.querySelector('div').classList.add('scale-95');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+    </script>
+</body>
+</html>
