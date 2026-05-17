@@ -3,65 +3,301 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gokul Agency | Modify Record</title>
+    <title>Gokul Agency | Edit Product</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        body {
+            background: linear-gradient(135deg, #FFFAF5 0%, #FFF8F2 100%);
+        }
+
+        /* HEADER STYLING */
+        .dashboard-header {
+            background: linear-gradient(135deg, #2D5016 0%, #3A6220 100%);
+            box-shadow: 0 10px 30px rgba(45, 80, 22, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* FORM & PANEL CARD STYLING */
+        .form-card {
+            background: linear-gradient(135deg, #ffffff 0%, #FFFAF5 100%);
+            border: 1.5px solid rgba(255, 163, 102, 0.15);
+            box-shadow: 0 10px 30px rgba(45, 80, 22, 0.08);
+        }
+
+        /* INPUT FIELD STYLING */
+        .form-input {
+            width: 100%;
+            padding: 11px 13px;
+            border: 2px solid rgba(255, 163, 102, 0.2);
+            border-radius: 10px;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            background: white;
+            color: #2D5016;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #FFA366;
+            box-shadow: 0 0 0 3px rgba(255, 163, 102, 0.1);
+            background: #fffdf9;
+        }
+
+        select.form-input {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+svg,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232D5016' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            padding-right: 35px;
+        }
+
+        textarea.form-input {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* BUTTONS */
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #2D5016 0%, #3A6220 100%);
+            color: #FFA366;
+            font-weight: 700;
+            font-size: 13px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 8px 20px rgba(45, 80, 22, 0.2);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(45, 80, 22, 0.3);
+            color: white;
+        }
+
+        .btn-cancel {
+            width: 100%;
+            padding: 12px;
+            background: white;
+            border: 2px solid rgba(239, 68, 68, 0.2);
+            color: #EF4444;
+            font-weight: 700;
+            font-size: 13px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-cancel:hover {
+            background: #FEF2F2;
+            border-color: #EF4444;
+            transform: translateY(-2px);
+        }
+
+        /* LIVE PREVIEW THUMBNAILS */
+        .media-preview-container {
+            background: #white;
+            border: 1px dashed rgba(255, 163, 102, 0.4);
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .gallery-thumb {
+            width: 64px;
+            height: 64px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 2px solid rgba(45, 80, 22, 0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+        }
+
+        .gallery-thumb:hover {
+            transform: scale(1.05);
+            border-color: #FFA366;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: #2D5016;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-label i {
+            margin-right: 6px;
+            color: #FFA366;
+        }
+    </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
-    <div class="max-w-xl w-full bg-white rounded-2xl shadow-xl p-8 border border-gray-200">
-        <div class="flex justify-between items-center border-b border-gray-100 pb-4 mb-6">
-            <div>
-                <h2 class="text-xl font-black text-gray-900">Modify Advertisement</h2>
-                <p class="text-xs text-gray-500 mt-0.5 font-medium">Updating: {{ product.title }}</p>
+<body class="min-h-screen flex flex-col">
+
+    <!-- TOP HEADER (Identical to Dashboard for Consistency) -->
+    <header class="dashboard-header text-white sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <h1 class="text-lg sm:text-2xl font-black tracking-wide">GOKUL AGENCY</h1>
+                <span class="bg-white/20 text-white text-[9px] sm:text-[10px] px-2 py-1 rounded font-mono uppercase tracking-wider">Editor Mode</span>
             </div>
-            <a href="{% url 'dashboard' %}" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg font-bold transition">
-                <i class="fa-solid fa-arrow-left-long mr-1"></i> Back
-            </a>
+            <div class="flex items-center space-x-4">
+                <a href="{% url 'dashboard' %}" class="text-sm text-white/80 hover:text-white transition flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-white/10">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Control Center</span>
+                </a>
+            </div>
         </div>
+    </header>
 
-        <form method="POST" enctype="multipart/form-data" class="space-y-4">
-            {% csrf_token %}
-            <div>
-                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Product Title</label>
-                {{ form.title }}
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Storage Category</label>
-                {{ form.category }}
-            </div>
-            <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
-                <label class="block text-xs font-bold text-gray-700 uppercase mb-2">Product Gallery Photos (Max 10)</label>
-                {{ form.extra_images }}
-                {% if form.extra_images.errors %}
-                    <p class="text-xs text-rose-600 font-semibold mt-1">{{ form.extra_images.errors.0 }}</p>
-                {% endif %}
+    <!-- CONTENT BODY -->
+    <main class="flex-grow w-full max-w-5xl mx-auto px-4 py-6 sm:py-10">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
 
-                <!-- NEW: Visual preview of currently uploaded gallery images -->
-                <div class="mt-3">
-                    <p class="text-[10px] text-gray-500 uppercase font-bold mb-1">Currently Uploaded:</p>
-                    <div class="flex gap-2 overflow-x-auto py-1">
-                        {% for img in product.images.all %}
-                            <img src="{{ img.image.url }}" class="h-12 w-12 object-cover rounded border border-gray-300 shadow-sm">
-                        {% empty %}
-                            <span class="text-xs text-gray-400">No images in gallery.</span>
-                        {% endfor %}
+            <!-- LEFT 2 COLUMNS: EDIT FORM PROPERTIES -->
+            <div class="lg:col-span-2">
+                <div class="form-card rounded-2xl border p-6 sm:p-8">
+                    <h2 class="text-lg sm:text-xl font-black text-gray-900 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-pen-to-square" style="color: #2D5016;"></i>
+                        Modify Product Details
+                    </h2>
+                    <p class="text-xs text-gray-500 mb-6">Updating this form will update the live digital shop listings instantly.</p>
+
+                    <form method="POST" enctype="multipart/form-data" class="space-y-5">
+                        {% csrf_token %}
+
+                        <div>
+                            <label class="form-label">
+                                <i class="fa-solid fa-heading"></i>
+                                Product Title
+                            </label>
+                            {{ form.title }}
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-tag"></i>
+                                    Category
+                                </label>
+                                {{ form.category }}
+                            </div>
+                            <div>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                                    Upload More Images
+                                </label>
+                                {{ form.extra_images }}
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="form-label">
+                                <i class="fa-solid fa-align-left"></i>
+                                Short Preview Description
+                            </label>
+                            {{ form.short_description }}
+                        </div>
+
+                        <div>
+                            <label class="form-label">
+                                <i class="fa-solid fa-file-lines"></i>
+                                Detailed Technical Specifications
+                            </label>
+                            {{ form.detailed_description }}
+                        </div>
+
+                        <!-- ACTIONS ROW BUTTON GRID -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4">
+                            <a href="{% url 'dashboard' %}" class="btn-cancel order-2 sm:order-1">
+                                <i class="fa-solid fa-xmark"></i>
+                                Cancel Changes
+                            </a>
+                            <button type="submit" class="btn-submit order-1 sm:order-2">
+                                <span>
+                                    <i class="fa-solid fa-floppy-disk"></i>
+                                    <span>Save Updates</span>
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- RIGHT 1 COLUMN: LIVE MEDIA GALLERY STATUS -->
+            <div class="lg:col-span-1">
+                <div class="form-card rounded-2xl border p-6 sm:p-6 lg:sticky lg:top-24">
+                    <h3 class="text-base font-bold text-gray-900 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-images" style="color: #2D5016;"></i>
+                        Active Gallery
+                    </h3>
+                    <p class="text-xs text-gray-500 mb-4">Currently hosted visual records for this product matrix selection.</p>
+
+                    <div class="media-preview-container">
+                        {% if product.images.all %}
+                            <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-3 gap-3">
+                                {% for img in product.images.all %}
+                                    <a href="{{ img.image.url }}" target="_blank" title="View Full Image">
+                                        <img src="{{ img.image.url }}" class="gallery-thumb" alt="Product attachment">
+                                    </a>
+                                {% endfor %}
+                            </div>
+                            <p class="text-[10px] text-gray-400 font-medium text-center mt-3">
+                                <i class="fa-solid fa-info-circle mr-1 text-orange-400"></i> Click a square preview to examine source.
+                            </p>
+                        {% else %}
+                            <div class="text-center py-8 text-gray-400">
+                                <i class="fa-solid fa-images-toggle text-3xl opacity-20 mb-2 block"></i>
+                                <p class="text-xs font-medium">No associated photos found</p>
+                                <p class="text-[11px] opacity-70 mt-0.5">Use the media selector to inject new photos into this matrix field array.</p>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
-            <div>
-                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Short Preview Summary</label>
-                {{ form.short_description }}
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Deep Modal Full Description</label>
-                {{ form.detailed_description }}
-            </div>
 
-            <button type="submit" class="w-full mt-4 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold py-3 rounded-xl transition shadow-md flex items-center justify-center space-x-2">
-                <i class="fa-solid fa-square-check text-base"></i>
-                <span>Save and Apply Modifications</span>
-            </button>
-        </form>
-    </div>
+        </div>
+    </main>
+
+    <script>
+        // Smooth input styling injection mirror from backend structure
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = document.querySelectorAll('input[type="text"], input[type="file"], select, textarea');
+            elements.forEach(element => {
+                if (!element.classList.contains('form-input')) {
+                    element.classList.add('form-input');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

@@ -6,63 +6,379 @@
     <title>Gokul Agency | School & Office Stationery</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        body {
+            background: linear-gradient(135deg, #FFFAF5 0%, #FFF8F2 100%);
+            overflow-x: hidden;
+        }
+
+        /* SMOOTH SCROLL */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* HEADER ENHANCEMENTS */
+        .top-branding {
+            background: linear-gradient(135deg, #2D5016 0%, #3A6220 100%);
+            box-shadow: 0 10px 30px rgba(45, 80, 22, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .top-branding::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 163, 102, 0.3), transparent);
+        }
+
+        /* PRODUCT CARD ENHANCEMENTS */
+        .product-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1.5px solid rgba(255, 163, 102, 0.15);
+            background: linear-gradient(135deg, #ffffff 0%, #FFFAF5 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 163, 102, 0.12), transparent);
+            transition: left 0.5s ease;
+            pointer-events: none;
+        }
+
+        .product-card:hover::before {
+            left: 100%;
+        }
+
+        .product-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(45, 80, 22, 0.12), 0 0 1px rgba(255, 163, 102, 0.3);
+            border-color: rgba(255, 163, 102, 0.3);
+        }
+
+        .product-card img {
+            transition: transform 0.4s ease;
+        }
+
+        .product-card:hover img {
+            transform: scale(1.08);
+        }
+
+        /* IMAGE CONTAINER */
+        .product-image-container {
+            position: relative;
+            background: linear-gradient(135deg, #F0EAE0 0%, #F5EFE8 100%);
+            overflow: hidden;
+        }
+
+        .product-image-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, transparent 0%, rgba(255, 163, 102, 0.05) 100%);
+            pointer-events: none;
+        }
+
+        /* BUTTON ANIMATIONS */
+        .btn-action {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #2D5016, #3A6220) !important;
+        }
+
+        .btn-action::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 163, 102, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-action:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(45, 80, 22, 0.3);
+            background: linear-gradient(135deg, #3A6220, #456A2B) !important;
+        }
+
+        /* MODAL ENHANCEMENTS */
+        #product-modal {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                backdrop-filter: blur(0px);
+            }
+            to {
+                opacity: 1;
+                backdrop-filter: blur(8px);
+            }
+        }
+
+        .modal-content {
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* THUMBNAIL HOVER */
+        #thumbnail-container img {
+            animation: thumbnailEnter 0.3s ease;
+        }
+
+        @keyframes thumbnailEnter {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* FOOTER ENHANCEMENTS */
+        .footer-section {
+            transition: all 0.3s ease;
+        }
+
+        .footer-section:hover {
+            transform: translateY(-4px);
+        }
+
+        /* FILTER TAB ACTIVE STATE */
+        .filter-tab {
+            position: relative;
+            transition: all 0.3s ease;
+            padding-bottom: 8px;
+        }
+
+        .filter-tab::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #FFA366, #FF9652);
+            border-radius: 2px;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .filter-tab.text-amber-400::after {
+            transform: scaleX(1);
+        }
+
+        /* RESPONSIVE TEXT SIZING */
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+            h2 {
+                font-size: 1.75rem;
+            }
+            h3 {
+                font-size: 1.1rem;
+            }
+
+            .product-card {
+                border-radius: 12px;
+            }
+
+            .product-image-container {
+                height: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .product-grid {
+                gap: 16px;
+            }
+        }
+
+        /* WHATSAPP BUTTON PULSE */
+        #whatsapp-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        #whatsapp-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        #whatsapp-btn:hover::before {
+            left: 100%;
+        }
+
+        #whatsapp-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.4);
+        }
+
+        /* SMOOTH TRANSITIONS */
+        * {
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* SIDEBAR ANIMATIONS */
+        #sidebar {
+            background: linear-gradient(135deg, #2D5016 0%, #3A6220 100%) !important;
+            box-shadow: -10px 0 40px rgba(45, 80, 22, 0.2);
+        }
+
+        /* GRID ANIMATION */
+        .product-card {
+            animation: cardFadeIn 0.5s ease;
+            animation-fill-mode: both;
+        }
+
+        @keyframes cardFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .product-card:nth-child(1) { animation-delay: 0.05s; }
+        .product-card:nth-child(2) { animation-delay: 0.1s; }
+        .product-card:nth-child(3) { animation-delay: 0.15s; }
+        .product-card:nth-child(4) { animation-delay: 0.2s; }
+        .product-card:nth-child(5) { animation-delay: 0.25s; }
+        .product-card:nth-child(6) { animation-delay: 0.3s; }
+        .product-card:nth-child(7) { animation-delay: 0.35s; }
+        .product-card:nth-child(8) { animation-delay: 0.4s; }
+
+        /* ENHANCED SPACING FOR MOBILE */
+        @media (max-width: 480px) {
+            body {
+                padding: 0;
+            }
+
+            .max-w-7xl {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            h1 {
+                letter-spacing: 0.5px;
+            }
+        }
+    </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
 
     <!-- TOP BRANDING -->
-    <div class="bg-indigo-900 text-white shadow-md sticky top-0 z-40">
+    <div class="top-branding bg-white text-white shadow-md sticky top-0 z-40" style="background: linear-gradient(135deg, #2D5016 0%, #3A6220 100%);">
         <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold tracking-wide">GOKUL AGENCY</h1>
-            <button id="menu-btn" class="md:hidden text-2xl focus:outline-none"><i class="fa-solid fa-bars"></i></button>
+            <h1 class="text-2xl md:text-3xl font-bold tracking-wide">GOKUL AGENCY</h1>
+            <button id="menu-btn" class="md:hidden text-2xl focus:outline-none hover:text-orange-100 transition" style="color: #FFA366;"><i class="fa-solid fa-bars"></i></button>
             <nav class="hidden md:flex space-x-6 font-medium">
-                <button onclick="filterCategory('all')" class="filter-tab hover:text-amber-400 transition text-amber-400" data-target="all">All Collection</button>
-                <button onclick="filterCategory('school')" class="filter-tab hover:text-amber-400 transition" data-target="school">School Stationery</button>
-                <button onclick="filterCategory('office')" class="filter-tab hover:text-amber-400 transition" data-target="office">Office Stationery</button>
+                <button onclick="filterCategory('all')" class="filter-tab hover:text-orange-100 transition" data-target="all" style="color: #FFA366;">All Collection</button>
+                <button onclick="filterCategory('school')" class="filter-tab hover:text-orange-100 transition" data-target="school">School Stationery</button>
+                <button onclick="filterCategory('office')" class="filter-tab hover:text-orange-100 transition" data-target="office">Office Stationery</button>
             </nav>
         </div>
     </div>
 
     <!-- RESPONSIVE MOBILE SIDEBAR -->
-    <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-indigo-950 text-white z-50 transform -translate-x-full transition-transform duration-300 ease-in-out shadow-2xl md:hidden">
-        <div class="p-6 flex justify-between items-center border-b border-indigo-800">
+    <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-indigo-950 text-white z-50 transform -translate-x-full transition-transform duration-300 ease-in-out shadow-2xl md:hidden" style="background: linear-gradient(135deg, #2D5016 0%, #3A6220 100%);">
+        <div class="p-6 flex justify-between items-center border-b" style="border-color: rgba(255, 163, 102, 0.2);">
             <span class="text-xl font-bold">Navigation</span>
-            <button id="close-sidebar" class="text-xl"><i class="fa-solid fa-xmark"></i></button>
+            <button id="close-sidebar" class="text-xl hover:text-orange-100 transition" style="color: #FFA366;"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <nav class="flex flex-col p-6 space-y-4 font-medium">
-            <button onclick="filterCategory('all'); toggleSidebar();" class="text-left py-2 hover:text-amber-400 border-b border-indigo-900">All Collection</button>
-            <button onclick="filterCategory('school'); toggleSidebar();" class="text-left py-2 hover:text-amber-400 border-b border-indigo-900">School Stationery</button>
-            <button onclick="filterCategory('office'); toggleSidebar();" class="text-left py-2 hover:text-amber-400 border-b border-indigo-900">Office Stationery</button>
+            <button onclick="filterCategory('all'); toggleSidebar();" class="text-left py-2 hover:text-orange-100 border-b transition" style="border-color: rgba(255, 163, 102, 0.2); color: #FFA366;">All Collection</button>
+            <button onclick="filterCategory('school'); toggleSidebar();" class="text-left py-2 hover:text-orange-100 border-b transition" style="border-color: rgba(255, 163, 102, 0.2);">School Stationery</button>
+            <button onclick="filterCategory('office'); toggleSidebar();" class="text-left py-2 hover:text-orange-100 border-b transition" style="border-color: rgba(255, 163, 102, 0.2);">Office Stationery</button>
         </nav>
     </div>
     <div id="sidebar-overlay" class="fixed inset-0 bg-black opacity-50 z-45 hidden md:hidden"></div>
 
     <!-- MAIN PRODUCT GALLERY SECTION -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-8">
-        <div class="text-center mb-10">
-            <h2 class="text-3xl font-extrabold text-gray-900">Our Premium Stationery Products</h2>
-            <p class="text-gray-600 mt-2">Explore top-tier supplies curated specifically for academic excellence and corporate efficiency.</p>
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-8 md:py-12">
+        <div class="text-center mb-10 md:mb-14">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-3">Our Premium Stationery Products</h2>
+            <p class="text-gray-600 text-base md:text-lg leading-relaxed max-w-2xl mx-auto">Explore top-tier supplies curated specifically for academic excellence and corporate efficiency.</p>
         </div>
 
-        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div id="product-grid" class="product-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
             {% for product in products %}
             <div class="product-card bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col" data-category="{{ product.category }}">
-                <div class="relative h-52 bg-gray-200 overflow-hidden">
+                <div class="product-image-container relative h-48 sm:h-52 bg-gray-200 overflow-hidden">
                     {% if product.images.all %}
                         <img src="{{ product.images.first.image.url }}" alt="{{ product.title }}" class="w-full h-full object-cover">
                     {% else %}
                         <div class="w-full h-full flex items-center justify-center bg-gray-300 text-gray-500">No Photo Uploaded</div>
                     {% endif %}
-                    <span class="absolute top-3 right-3 bg-indigo-900 text-white text-xs px-2.5 py-1 rounded-full uppercase tracking-wider font-semibold">
+                    <span class="absolute top-3 right-3 bg-white text-white text-xs px-2.5 py-1 rounded-full uppercase tracking-wider font-semibold" style="background: linear-gradient(135deg, #2D5016, #3A6220); color: #FFA366;">
                         {{ product.get_category_display }}
                     </span>
                 </div>
-                <div class="p-5 flex flex-col flex-grow">
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">{{ product.title }}</h3>
-                    <p class="text-gray-600 text-sm flex-grow line-clamp-3">{{ product.short_description }}</p>
+                <div class="p-4 md:p-5 flex flex-col flex-grow">
+                    <h3 class="text-base md:text-lg font-bold text-gray-900 mb-2 line-clamp-2">{{ product.title }}</h3>
+                    <p class="text-gray-600 text-xs md:text-sm flex-grow line-clamp-3 leading-relaxed">{{ product.short_description }}</p>
 
                     <button
                         onclick="openModal('{{ product.title|escapejs }}', '{{ product.detailed_description|escapejs }}', '{{ product.get_category_display }}', [{% for img in product.images.all %}'{{ img.image.url }}'{% if not forloop.last %},{% endif %}{% endfor %}])"
-                        class="mt-4 w-full bg-indigo-600 text-white text-sm font-semibold py-2.5 px-4 rounded-lg hover:bg-indigo-700 transition flex items-center justify-center space-x-2">
+                        class="btn-action mt-4 w-full text-white text-xs md:text-sm font-semibold py-2.5 px-4 rounded-lg transition flex items-center justify-center space-x-2" style="background: linear-gradient(135deg, #2D5016, #3A6220);">
                         <span>More Info</span>
                         <i class="fa-solid fa-arrow-right text-xs"></i>
                     </button>
@@ -78,31 +394,31 @@
 
     <!-- VERTICAL FLOW STACKED POP-UP MODAL -->
     <div id="product-modal" class="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-2xl max-w-lg w-full max-h-[92vh] overflow-y-auto shadow-2xl relative transform scale-95 transition-transform duration-300 flex flex-col">
+        <div class="modal-content bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl relative transform scale-95 transition-transform duration-300 flex flex-col">
 
-            <button onclick="closeModal()" class="absolute top-4 right-4 bg-white/80 backdrop-blur hover:bg-white text-gray-700 rounded-full p-2 z-10 transition shadow-md">
+            <button onclick="closeModal()" class="absolute top-4 right-4 bg-white/80 backdrop-blur hover:bg-white text-gray-700 rounded-full p-2 z-10 transition shadow-md hover:shadow-lg">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
 
             <!-- TOP PORTION: IMAGE SHOWCASE -->
-            <div class="bg-slate-50 p-4 border-b border-gray-100 flex flex-col items-center justify-center pt-10">
-                <div class="h-64 w-full flex items-center justify-center overflow-hidden">
+            <div class="bg-slate-50 p-4 md:p-6 border-b border-gray-100 flex flex-col items-center justify-center pt-8 md:pt-10">
+                <div class="h-56 md:h-64 w-full flex items-center justify-center overflow-hidden">
                     <img id="modal-img" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg drop-shadow-md transition-all duration-200">
                 </div>
-                <div id="thumbnail-container" class="flex items-center justify-center gap-2 mt-4 overflow-x-auto w-full py-1"></div>
+                <div id="thumbnail-container" class="flex items-center justify-center gap-2 md:gap-3 mt-4 overflow-x-auto w-full py-1"></div>
             </div>
 
             <!-- BOTTOM PORTION: DESCRIPTIONS & INQUIRY -->
-            <div class="p-6 flex flex-col justify-between flex-grow">
+            <div class="p-4 md:p-6 flex flex-col justify-between flex-grow">
                 <div>
-                    <span id="modal-badge" class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2.5 py-1 rounded-full uppercase"></span>
-                    <h3 id="modal-title" class="text-xl font-black text-gray-900 mt-3 mb-4"></h3>
+                    <span id="modal-badge" class="text-xs font-bold px-2.5 py-1 rounded-full uppercase" style="background: rgba(255, 163, 102, 0.2); color: #2D5016;"></span>
+                    <h3 id="modal-title" class="text-lg md:text-xl font-black text-gray-900 mt-3 mb-4"></h3>
                     <p id="modal-desc" class="text-gray-600 text-sm leading-relaxed whitespace-pre-line border-t border-gray-50 pt-3"></p>
                 </div>
 
-                <div class="mt-6">
+                <div class="mt-6 md:mt-8">
                     <a id="whatsapp-btn" href="#" target="_blank" class="w-full bg-emerald-600 text-white font-semibold py-3 px-4 rounded-xl hover:bg-emerald-700 transition flex items-center justify-center space-x-2 shadow-md">
-                        <i class="fa-brands fa-whatsapp text-xl"></i>
+                        <i class="fa-brands fa-whatsapp text-lg md:text-xl"></i>
                         <span>Inquire via WhatsApp</span>
                     </a>
                 </div>
@@ -111,39 +427,39 @@
     </div>
 
     <!-- FOOTER -->
-    <footer class="bg-indigo-950 text-indigo-100 pt-12 pb-6 border-t border-indigo-900">
-        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-            <div>
+    <footer class="text-indigo-100 pt-10 md:pt-12 pb-6 border-t mt-8 md:mt-12" style="background: linear-gradient(135deg, #2D5016 0%, #3A6220 100%); color: #FFFAF5; border-color: rgba(255, 163, 102, 0.2);">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8">
+            <div class="footer-section">
                 <h4 class="text-white font-bold text-lg mb-4">Gokul Agency</h4>
-                <p class="text-sm text-indigo-200 leading-relaxed">Your trusted local partner for premium office organizational tools and essential school stationery assets. Catering to individual requirements and wholesale institutional bulk updates.</p>
+                <p class="text-sm leading-relaxed" style="color: #FFFAF5;">Your trusted local partner for premium office organizational tools and essential school stationery assets. Catering to individual requirements and wholesale institutional bulk updates.</p>
             </div>
-            <div>
+            <div class="footer-section">
                 <h4 class="text-white font-bold text-lg mb-4">Quick Navigation</h4>
                 <div class="flex flex-col space-y-2 text-sm">
-                    <button onclick="filterCategory('all')" class="text-left hover:text-white transition"><i class="fa-solid fa-chevron-right text-xs mr-2 opacity-50"></i>All Products</button>
-                    <button onclick="filterCategory('school')" class="text-left hover:text-white transition"><i class="fa-solid fa-chevron-right text-xs mr-2 opacity-50"></i>School Department</button>
-                    <button onclick="filterCategory('office')" class="text-left hover:text-white transition"><i class="fa-solid fa-chevron-right text-xs mr-2 opacity-50"></i>Office Department</button>
+                    <button onclick="filterCategory('all')" class="text-left hover:text-white transition" style="color: #FFA366;"><i class="fa-solid fa-chevron-right text-xs mr-2 opacity-50"></i>All Products</button>
+                    <button onclick="filterCategory('school')" class="text-left hover:text-white transition" style="color: #FFA366;"><i class="fa-solid fa-chevron-right text-xs mr-2 opacity-50"></i>School Department</button>
+                    <button onclick="filterCategory('office')" class="text-left hover:text-white transition" style="color: #FFA366;"><i class="fa-solid fa-chevron-right text-xs mr-2 opacity-50"></i>Office Department</button>
                 </div>
             </div>
-            <div>
+            <div class="footer-section">
                 <h4 class="text-white font-bold text-lg mb-4">Store Communication</h4>
-                <ul class="space-y-3.5 text-sm">
+                <ul class="space-y-3 text-sm">
                     <li class="flex items-start space-x-3">
-                        <i class="fa-solid fa-location-dot text-amber-400 mt-1 text-base"></i>
-                        <span>Gokul Agency, Opp. Sukharamnagar Society, Near Sukharamnagar Water Tank, Ahmedabad, Gujarat</span>
+                        <i class="fa-solid fa-location-dot mt-1 text-base flex-shrink-0" style="color: #FFA366;"></i>
+                        <span style="color: #FFFAF5;">Gokul Agency, Opp. Sukharamnagar Society, Near Sukharamnagar Water Tank, Ahmedabad, Gujarat</span>
                     </li>
                     <li class="flex items-center space-x-3">
-                        <i class="fa-solid fa-phone text-amber-400 text-base"></i>
-                        <span>+91 70160 01517</span>
+                        <i class="fa-solid fa-phone text-base" style="color: #FFA366;"></i>
+                        <span style="color: #FFFAF5;">+91 70160 01517</span>
                     </li>
                     <li class="flex items-center space-x-3">
-                        <i class="fa-solid fa-envelope text-amber-400 text-base"></i>
-                        <span>at197953@gmail.com</span>
+                        <i class="fa-solid fa-envelope text-base" style="color: #FFA366;"></i>
+                        <span style="color: #FFFAF5;">at197953@gmail.com</span>
                     </li>
                 </ul>
             </div>
         </div>
-        <div class="max-w-7xl mx-auto px-4 border-t border-indigo-900 pt-6 text-center text-xs text-indigo-300">
+        <div class="max-w-7xl mx-auto px-4 border-t pt-6 text-center text-xs" style="border-color: rgba(255, 163, 102, 0.2); color: #FFA366;">
             <p>&copy; 2026 Gokul Agency. All Rights Reserved. Built securely with Django.</p>
         </div>
     </footer>

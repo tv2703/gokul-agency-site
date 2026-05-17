@@ -6,131 +6,669 @@
     <title>Gokul Agency | Control Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        body {
+            background: linear-gradient(135deg, #FFFAF5 0%, #FFF8F2 100%);
+        }
+
+        /* HEADER STYLING */
+        .dashboard-header {
+            background: linear-gradient(135deg, #2D5016 0%, #3A6220 100%);
+            box-shadow: 0 10px 30px rgba(45, 80, 22, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 163, 102, 0.3), transparent);
+        }
+
+        /* FORM STYLING */
+        .form-card {
+            background: linear-gradient(135deg, #ffffff 0%, #FFFAF5 100%);
+            border: 1.5px solid rgba(255, 163, 102, 0.15);
+            box-shadow: 0 10px 30px rgba(45, 80, 22, 0.08);
+        }
+
+        .form-card:hover {
+            box-shadow: 0 15px 40px rgba(45, 80, 22, 0.12);
+        }
+
+        /* INPUT FIELD STYLING */
+        .form-input {
+            width: 100%;
+            padding: 11px 13px;
+            border: 2px solid rgba(255, 163, 102, 0.2);
+            border-radius: 10px;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            background: white;
+            color: #2D5016;
+        }
+
+        .form-input::placeholder {
+            color: rgba(45, 80, 22, 0.4);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #FFA366;
+            box-shadow: 0 0 0 3px rgba(255, 163, 102, 0.1);
+            background: #fffdf9;
+        }
+
+        select.form-input {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232D5016' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            padding-right: 35px;
+        }
+
+        textarea.form-input {
+            resize: vertical;
+            min-height: 80px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* SUBMIT BUTTON */
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #2D5016 0%, #3A6220 100%);
+            color: #FFA366;
+            font-weight: 700;
+            font-size: 13px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(45, 80, 22, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 163, 102, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(45, 80, 22, 0.3);
+            color: white;
+        }
+
+        .btn-submit:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-submit span {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* PRODUCTS CARD */
+        .products-card {
+            background: linear-gradient(135deg, #ffffff 0%, #FFFAF5 100%);
+            border: 1.5px solid rgba(255, 163, 102, 0.15);
+            box-shadow: 0 10px 30px rgba(45, 80, 22, 0.08);
+        }
+
+        /* PRODUCT ITEM CARD (Mobile) */
+        .product-item-card {
+            background: white;
+            border: 1px solid rgba(255, 163, 102, 0.15);
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .product-item-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 25px rgba(45, 80, 22, 0.12);
+            border-color: rgba(255, 163, 102, 0.3);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 150px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #F0EAE0 0%, #F5EFE8 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 163, 102, 0.1);
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-title {
+            font-weight: 700;
+            color: #2D5016;
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+
+        .product-description {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .category-badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+        }
+
+        .category-school {
+            background: linear-gradient(135deg, rgba(255, 163, 102, 0.15), rgba(255, 163, 102, 0.1));
+            color: #2D5016;
+            border: 1px solid rgba(255, 163, 102, 0.3);
+        }
+
+        .category-office {
+            background: linear-gradient(135deg, rgba(45, 80, 22, 0.15), rgba(45, 80, 22, 0.1));
+            color: #2D5016;
+            border: 1px solid rgba(45, 80, 22, 0.3);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 8px 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            text-decoration: none;
+            color: white;
+            min-width: 0;
+        }
+
+        .btn-edit {
+            background: linear-gradient(135deg, #2D5016, #3A6220);
+            color: #FFA366;
+        }
+
+        .btn-edit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(45, 80, 22, 0.2);
+        }
+
+        .btn-delete {
+            background: #EF4444;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #DC2626;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(239, 68, 68, 0.2);
+        }
+
+        /* Desktop: Icon only buttons for table */
+        @media (min-width: 769px) {
+            .action-btn {
+                padding: 8px;
+                width: 36px;
+                height: 36px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .action-btn i {
+                margin: 0;
+            }
+
+            .action-btn span {
+                display: none;
+            }
+        }
+
+        /* TABLE STYLING (Desktop) */
+        .products-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .products-table thead {
+            background: linear-gradient(135deg, #f9f8f7 0%, #f5f0e9 100%);
+            border-bottom: 2px solid rgba(255, 163, 102, 0.2);
+        }
+
+        .products-table th {
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 700;
+            color: #2D5016;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .products-table tbody tr {
+            border-bottom: 1px solid rgba(255, 163, 102, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .products-table tbody tr:hover {
+            background: rgba(255, 163, 102, 0.05);
+        }
+
+        .products-table td {
+            padding: 10px 12px;
+            font-size: 12px;
+            color: #333;
+        }
+
+        .products-table td p {
+            margin: 0;
+        }
+
+        .products-table .product-title {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .products-table .product-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .product-thumbnail {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            overflow: hidden;
+            object-fit: cover;
+            background: linear-gradient(135deg, #F0EAE0, #F5EFE8);
+            flex-shrink: 0;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            color: rgba(45, 80, 22, 0.1);
+            margin-bottom: 12px;
+        }
+
+        /* RESPONSIVE UTILITIES */
+        @media (max-width: 768px) {
+            .products-table {
+                display: none;
+            }
+
+            .product-items-grid {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .product-items-grid {
+                display: none;
+            }
+        }
+
+        /* MOBILE HEADER MENU */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: #FFA366;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        @media (max-width: 640px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .header-actions {
+                display: none;
+            }
+
+            .header-actions.mobile-open {
+                display: flex;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: linear-gradient(135deg, #2D5016 0%, #3A6220 100%);
+                padding: 12px;
+                gap: 8px;
+                z-index: 50;
+            }
+
+            .header-actions.mobile-open a,
+            .header-actions.mobile-open button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* FORM LABEL */
+        .form-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: #2D5016;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-label i {
+            margin-right: 6px;
+            color: #FFA366;
+        }
+    </style>
 </head>
-<body class="bg-gray-50 font-sans min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col">
 
     <!-- DASHBOARD TOP HEADER -->
-    <header class="bg-slate-900 text-white shadow-md">
+    <header class="dashboard-header text-white sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <h1 class="text-xl font-black tracking-wide text-indigo-400">GOKUL AGENCY</h1>
-                <span class="bg-slate-800 text-slate-300 text-[10px] px-2 py-0.5 rounded font-mono uppercase tracking-wider">Owner Panel</span>
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <h1 class="text-lg sm:text-2xl font-black tracking-wide">GOKUL AGENCY</h1>
+                <span class="hidden sm:block bg-white/20 text-white text-[9px] sm:text-[10px] px-2 py-1 rounded font-mono uppercase tracking-wider">Owner Panel</span>
             </div>
-            <div class="flex items-center space-x-4">
-                <a href="{% url 'home' %}" target="_blank" class="text-sm text-slate-300 hover:text-white transition"><i class="fa-solid fa-globe mr-1.5"></i>View Site</a>
-                <a href="{% url 'logout' %}" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-3 py-2 rounded-lg transition"><i class="fa-solid fa-power-off mr-1.5"></i>Log Out</a>
+
+            <button class="mobile-menu-btn" id="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="header-actions flex items-center space-x-2 sm:space-x-4">
+                <a href="{% url 'home' %}" target="_blank" class="text-sm text-white/80 hover:text-white transition flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-white/10">
+                    <i class="fa-solid fa-globe"></i>
+                    <span class="hidden sm:inline">View Site</span>
+                </a>
+                <a href="{% url 'logout' %}" class="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white text-xs font-bold px-3 py-2 rounded-lg transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-power-off"></i>
+                    <span class="hidden sm:inline">Log Out</span>
+                </a>
             </div>
         </div>
     </header>
 
-    <!-- CONTAINER SPLIT LAYOUT -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- MAIN CONTAINER -->
+    <main class="flex-grow w-full max-w-7xl mx-auto px-4 py-6 sm:py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
 
-        <!-- LEFT COLUMN: ADD STATIONERY FORM -->
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 h-fit sticky top-6">
-            <h2 class="text-lg font-bold text-gray-900 mb-1"><i class="fa-solid fa-circle-plus text-indigo-600 mr-2"></i>Advertise New Item</h2>
-            <p class="text-xs text-gray-500 mb-5">Fill out the fields below to instantly cast products to the catalog grid.</p>
+            <!-- LEFT COLUMN: ADD PRODUCT FORM (Sticky on desktop) -->
+            <div class="lg:sticky lg:top-24 lg:h-fit">
+                <div class="form-card rounded-2xl border p-6 sm:p-8">
+                    <h2 class="text-lg sm:text-xl font-black text-gray-900 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-plus" style="color: #2D5016;"></i>
+                        Add New Item
+                    </h2>
+                    <p class="text-xs text-gray-500 mb-6">Fill details to publish products instantly.</p>
 
-            <form method="POST" enctype="multipart/form-data" class="space-y-4">
-                {% csrf_token %}
+                    <form method="POST" enctype="multipart/form-data" class="space-y-4">
+                        {% csrf_token %}
 
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Product Title</label>
-                    {{ form.title }}
+                        <div>
+                            <label class="form-label">
+                                <i class="fa-solid fa-heading"></i>
+                                Product Title
+                            </label>
+                            {{ form.title }}
+                        </div>
+
+                        <div>
+                            <label class="form-label">
+                                <i class="fa-solid fa-tag"></i>
+                                Category
+                            </label>
+                            {{ form.category }}
+                        </div>
+
+                        <div>
+                            <label class="form-label">
+                                <i class="fa-solid fa-images"></i>
+                                Photos (Max 10)
+                            </label>
+                            {{ form.extra_images }}
+                            {% if form.extra_images.errors %}
+                                <p class="text-xs text-red-600 font-semibold mt-2">
+                                    <i class="fa-solid fa-circle-exclamation mr-1"></i>
+                                    {{ form.extra_images.errors.0 }}
+                                </p>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label class="form-label">
+                                <i class="fa-solid fa-align-left"></i>
+                                Short Preview
+                            </label>
+                            {{ form.short_description }}
+                        </div>
+
+                        <div>
+                            <label class="form-label">
+                                <i class="fa-solid fa-file-lines"></i>
+                                Full Description
+                            </label>
+                            {{ form.detailed_description }}
+                        </div>
+
+                        <button type="submit" class="btn-submit mt-6">
+                            <span>
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                <span>Publish Item</span>
+                            </span>
+                        </button>
+                    </form>
                 </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Storage Category</label>
-                    {{ form.category }}
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Product Gallery Photos (Max 10)</label>
-                    {{ form.extra_images }}
-                    {% if form.extra_images.errors %}
-                        <p class="text-xs text-rose-600 font-semibold mt-1">{{ form.extra_images.errors.0 }}</p>
-                    {% endif %}
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Short Preview Summary</label>
-                    {{ form.short_description }}
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Deep Modal Full Description</label>
-                    {{ form.detailed_description }}
-                </div>
+            </div>
 
-                <button type="submit" class="w-full mt-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold py-2.5 rounded-xl transition shadow-sm flex items-center justify-center space-x-2">
-                    <i class="fa-solid fa-cloud-arrow-up"></i>
-                    <span>Publish to Live Site</span>
-                </button>
-            </form>
-        </div>
+            <!-- RIGHT COLUMN: PRODUCTS MANAGEMENT -->
+            <div class="lg:col-span-2">
+                <div class="products-card rounded-2xl border p-6 sm:p-8">
+                    <h2 class="text-lg sm:text-xl font-black text-gray-900 mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-boxes-stacked" style="color: #2D5016;"></i>
+                        Products ({{ products|length }})
+                    </h2>
 
-        <!-- RIGHT COLUMN: CURRENT PRODUCT MANAGEMENT TABLES -->
-        <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
-            <h2 class="text-lg font-bold text-gray-900 mb-4"><i class="fa-solid fa-boxes-stacked text-slate-700 mr-2"></i>Active Advertised Stock ({{ products|length }})</h2>
+                    {% if products %}
+                        <!-- DESKTOP TABLE VIEW -->
+                        <div class="hidden md:block overflow-x-auto">
+                            <table class="products-table">
+                                <thead>
+                                    <tr>
+                                        <th style="color: #2D5016;">Item Details</th>
+                                        <th style="color: #2D5016;">Category</th>
+                                        <th style="color: #2D5016; text-align: right;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for product in products %}
+                                    <tr>
+                                        <td>
+                                            <div class="product-info">
+                                                {% if product.images.all %}
+                                                    <img src="{{ product.images.first.image.url }}" alt="{{ product.title }}" class="product-thumbnail">
+                                                {% else %}
+                                                    <div class="product-thumbnail flex items-center justify-center text-gray-300">
+                                                        <i class="fa-solid fa-image text-sm"></i>
+                                                    </div>
+                                                {% endif %}
+                                                <p class="product-title truncate">{{ product.title }}</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="category-badge {% if product.category == 'school' %}category-school{% else %}category-office{% endif %}">
+                                                {{ product.get_category_display }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="flex items-center justify-end gap-2">
+                                                <a href="{% url 'edit_product' product.pk %}" class="action-btn btn-edit" title="Edit Product">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                </a>
+                                                <form action="{% url 'delete_product' product.pk %}" method="POST" onsubmit="return confirm('Delete this product?');" class="m-0 p-0">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="action-btn btn-delete" title="Delete Product">
+                                                        <i class="fa-solid fa-trash-can"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
 
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="border-b border-gray-200 text-xs font-bold uppercase text-gray-500 bg-gray-50">
-                            <th class="py-3 px-4">Item Details</th>
-                            <th class="py-3 px-4">Category</th>
-                            <th class="py-3 px-4 text-right">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100 text-sm">
-                        {% for product in products %}
-                        <tr class="hover:bg-gray-50/70 transition">
-                            <td class="py-3.5 px-4 flex items-center space-x-3">
-                                <div class="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 border border-gray-200 flex-shrink-0">
-                                    <!-- UPDATED: Now checks the new gallery relationship -->
+                        <!-- MOBILE CARD VIEW -->
+                        <div class="product-items-grid">
+                            {% for product in products %}
+                            <div class="product-item-card">
+                                <div class="product-image">
                                     {% if product.images.all %}
-                                        <img src="{{ product.images.first.image.url }}" class="w-full h-full object-cover">
+                                        <img src="{{ product.images.first.image.url }}" alt="{{ product.title }}">
                                     {% else %}
-                                        <div class="w-full h-full flex items-center justify-center text-[10px] text-gray-400">N/A</div>
+                                        <div class="flex items-center justify-center text-gray-300 text-4xl">
+                                            <i class="fa-solid fa-image"></i>
+                                        </div>
                                     {% endif %}
                                 </div>
-                                <div class="truncate max-w-[200px]">
-                                    <p class="font-semibold text-gray-900 truncate">{{ product.title }}</p>
-                                    <p class="text-xs text-gray-400 truncate">{{ product.short_description }}</p>
-                                </div>
-                            </td>
-                            <td class="py-3.5 px-4">
-                                <span class="text-xs font-semibold px-2.5 py-1 rounded-full {% if product.category == 'school' %}bg-amber-50 text-amber-800 border border-amber-200{% else %}bg-blue-50 text-blue-800 border border-blue-200{% endif %}">
+
+                                <span class="category-badge {% if product.category == 'school' %}category-school{% else %}category-office{% endif %}">
                                     {{ product.get_category_display }}
                                 </span>
-                            </td>
-                            <td class="py-3.5 px-4">
-                                <div class="flex items-center justify-end space-x-2">
 
-                                    <!-- Secure Edit Action Button -->
-                                    <a href="{% url 'edit_product' product.pk %}" class="text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-2 rounded-lg transition flex items-center" title="Edit Product">
-                                        <i class="fa-solid fa-pen-to-square text-sm"></i>
+                                <p class="product-title">{{ product.title }}</p>
+                                <p class="product-description">{{ product.short_description }}</p>
+
+                                <div class="action-buttons">
+                                    <a href="{% url 'edit_product' product.pk %}" class="action-btn btn-edit">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                        Edit
                                     </a>
-
-                                    <!-- Secure Delete Form/Button -->
-                                    <form action="{% url 'delete_product' product.pk %}" method="POST" onsubmit="return confirm('Are you sure you want to remove this product?');" class="m-0 p-0 flex">
+                                    <form action="{% url 'delete_product' product.pk %}" method="POST" onsubmit="return confirm('Delete this product?');" class="m-0 p-0 flex-1">
                                         {% csrf_token %}
-                                        <button type="submit" class="text-rose-500 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 px-3 py-2 rounded-lg transition flex items-center" title="Delete Product">
-                                            <i class="fa-solid fa-trash-can text-sm"></i>
+                                        <button type="submit" class="action-btn btn-delete w-full">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                            Delete
                                         </button>
                                     </form>
-
                                 </div>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="3" class="text-center py-12 text-gray-400">
-                                <i class="fa-solid fa-warehouse text-4xl mb-2 text-gray-200"></i>
-                                <p class="text-sm">No inventory items uploaded yet.</p>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="empty-state">
+                            <div class="empty-state-icon">
+                                <i class="fa-solid fa-inbox"></i>
+                            </div>
+                            <p class="text-sm text-gray-500 font-medium">No products yet</p>
+                            <p class="text-xs text-gray-400 mt-1">Add your first item using the form on the left</p>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </main>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.querySelector('.header-actions');
+            menu.classList.toggle('mobile-open');
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const header = document.querySelector('.dashboard-header');
+            if (!header.contains(event.target)) {
+                const menu = document.querySelector('.header-actions');
+                menu.classList.remove('mobile-open');
+            }
+        });
+
+        // Apply Tailwind-like classes to Django form fields
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('input[type="text"], input[type="file"], select, textarea');
+            inputs.forEach(input => {
+                if (!input.classList.contains('form-input')) {
+                    input.classList.add('form-input');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

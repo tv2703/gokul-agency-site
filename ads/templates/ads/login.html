@@ -5,33 +5,519 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gokul Agency | Secure Access</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        body {
+            background: linear-gradient(135deg, #2D5016 0%, #3A6220 50%, #1f3a0b 100%);
+            overflow: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* ANIMATED BACKGROUND ELEMENTS */
+        .bg-blob {
+            position: fixed;
+            border-radius: 50%;
+            opacity: 0.1;
+            filter: blur(50px);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .blob-1 {
+            width: 400px;
+            height: 400px;
+            background: #FFA366;
+            top: -100px;
+            right: -100px;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .blob-2 {
+            width: 300px;
+            height: 300px;
+            background: #FFA366;
+            bottom: -50px;
+            left: -50px;
+            animation: float 15s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(20px);
+            }
+        }
+
+        /* CONTAINER ANIMATION */
+        .login-container {
+            animation: slideUp 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            opacity: 0;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* CARD STYLING */
+        .login-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 250, 245, 0.95) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 163, 102, 0.2);
+            box-shadow: 0 20px 60px rgba(45, 80, 22, 0.2), 0 0 1px rgba(255, 163, 102, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 163, 102, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .login-card:hover::before {
+            left: 100%;
+        }
+
+        /* HEADER STYLING */
+        .login-header {
+            text-align: center;
+            margin-bottom: 32px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .login-header h2 {
+            background: linear-gradient(135deg, #2D5016 0%, #3A6220 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .logo-icon {
+            display: inline-block;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #2D5016, #3A6220);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFA366;
+            font-size: 24px;
+            margin-bottom: 12px;
+            box-shadow: 0 8px 20px rgba(45, 80, 22, 0.2);
+            animation: iconBounce 3s ease-in-out infinite;
+        }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .login-subtitle {
+            background: linear-gradient(135deg, #2D5016 0%, #3A6220 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            font-weight: 700;
+        }
+
+        /* FORM GROUP STYLING */
+        .form-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: #2D5016;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-label i {
+            margin-right: 6px;
+            color: #FFA366;
+        }
+
+        /* INPUT FIELD STYLING */
+        .form-input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid rgba(255, 163, 102, 0.2);
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, #ffffff 0%, #FFFAF5 100%);
+            color: #2D5016;
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-input::placeholder {
+            color: rgba(45, 80, 22, 0.4);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #FFA366;
+            box-shadow: 0 0 0 3px rgba(255, 163, 102, 0.1), 0 8px 20px rgba(45, 80, 22, 0.15);
+            background: #ffffff;
+        }
+
+        .form-input:-webkit-autofill,
+        .form-input:-webkit-autofill:hover,
+        .form-input:-webkit-autofill:focus {
+            -webkit-box-shadow: 0 0 0 30px white inset !important;
+            -webkit-text-fill-color: #2D5016 !important;
+        }
+
+        /* PASSWORD TOGGLE */
+        .password-toggle {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #FFA366;
+            z-index: 3;
+            transition: all 0.2s ease;
+            padding: 8px;
+        }
+
+        .password-toggle:hover {
+            color: #2D5016;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .password-input-wrapper {
+            position: relative;
+        }
+
+        /* SUBMIT BUTTON */
+        .btn-submit {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #2D5016 0%, #3A6220 100%);
+            color: #FFA366;
+            font-weight: 700;
+            font-size: 14px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(45, 80, 22, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 163, 102, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-submit:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(45, 80, 22, 0.3);
+            color: white;
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .btn-submit-text {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* ERROR MESSAGE */
+        .error-message {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
+            border: 1.5px solid #EF4444;
+            color: #991b1b;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideDown 0.4s ease;
+        }
+
+        .error-message i {
+            font-size: 16px;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* SUCCESS MESSAGE */
+        .success-message {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%);
+            border: 1.5px solid #22c55e;
+            color: #15803d;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideDown 0.4s ease;
+        }
+
+        /* LOADING STATE */
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 163, 102, 0.3);
+            border-top: 2px solid #FFA366;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* SIGN UP LINK */
+        .signup-section {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 163, 102, 0.1);
+            font-size: 13px;
+            color: #2D5016;
+        }
+
+        .signup-link {
+            color: #FFA366;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .signup-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #FFA366;
+            transition: width 0.3s ease;
+        }
+
+        .signup-link:hover::after {
+            width: 100%;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 640px) {
+            .login-container {
+                padding: 16px;
+            }
+
+            .login-card {
+                border-radius: 16px;
+            }
+
+            .login-header {
+                margin-bottom: 24px;
+            }
+
+            .login-header h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
 </head>
-<body class="bg-slate-100 h-screen flex items-center justify-center px-4">
-    <div class="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 border border-slate-200">
-        <div class="text-center mb-6">
-            <h2 class="text-2xl font-black text-slate-800 tracking-tight">GOKUL AGENCY</h2>
-            <p class="text-xs text-slate-500 mt-1 uppercase tracking-widest font-semibold">Management Console Authentication</p>
+<body class="h-screen flex items-center justify-center px-4">
+    <!-- ANIMATED BACKGROUND ELEMENTS -->
+    <div class="blob-1 bg-blob"></div>
+    <div class="blob-2 bg-blob"></div>
+
+    <!-- MAIN LOGIN CONTAINER -->
+    <div class="login-container max-w-md w-full">
+        <div class="login-card rounded-2xl shadow-2xl p-8 border">
+
+            <!-- HEADER SECTION -->
+            <div class="login-header">
+                <div class="logo-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h2 class="text-3xl font-black tracking-tight">GOKUL AGENCY</h2>
+                <p class="text-xs mt-2 uppercase tracking-widest font-bold login-subtitle">Management Console Authentication</p>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <form method="POST" class="space-y-4">
+                {% csrf_token %}
+
+                <!-- ERROR MESSAGE -->
+                {% if form.errors %}
+                <div class="error-message">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>Invalid credentials. Please try again.</span>
+                </div>
+                {% endif %}
+
+                <!-- USERNAME INPUT -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-user"></i>
+                        Username
+                    </label>
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="Enter your username"
+                        required
+                        class="form-input"
+                        autocomplete="username">
+                </div>
+
+                <!-- PASSWORD INPUT -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-lock"></i>
+                        Password
+                    </label>
+                    <div class="password-input-wrapper">
+                        <input
+                            type="password"
+                            id="password-field"
+                            name="password"
+                            placeholder="Enter your password"
+                            required
+                            class="form-input w-full pr-12"
+                            autocomplete="current-password">
+                        <span class="password-toggle" onclick="togglePassword()" title="Show/Hide Password">
+                            <i class="fas fa-eye" id="toggle-icon"></i>
+                        </span>
+                    </div>
+                </div>
+
+
+                <!-- SUBMIT BUTTON -->
+                <button type="submit" class="btn-submit" id="submit-btn">
+                    <span class="btn-submit-text">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Secure Log In
+                    </span>
+                </button>
+            </form>
         </div>
-
-        <form method="POST" class="space-y-4">
-            {% csrf_token %}
-            <div>
-                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Username</label>
-                <input type="text" name="username" required class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Password</label>
-                <input type="password" name="password" required class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
-            </div>
-
-            {% if form.errors %}
-            <p class="text-xs text-rose-600 font-medium bg-rose-50 p-2.5 rounded-md">Invalid owner credentials. Please try again.</p>
-            {% endif %}
-
-            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg text-sm transition shadow-md">
-                Secure Log In
-            </button>
-        </form>
     </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // Password visibility toggle
+        function togglePassword() {
+            const field = document.getElementById('password-field');
+            const icon = document.getElementById('toggle-icon');
+
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                field.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        // Form submit animation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const btn = document.getElementById('submit-btn');
+            const text = btn.querySelector('.btn-submit-text');
+
+            // Show loading state
+            text.innerHTML = '<span class="loading-spinner"></span><span>Authenticating...</span>';
+            btn.disabled = true;
+        });
+
+        // Smooth focus effects
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.parentElement.classList.add('focused');
+            });
+
+            input.addEventListener('blur', function() {
+                this.parentElement.parentElement.classList.remove('focused');
+            });
+        });
+    </script>
 </body>
 </html>
